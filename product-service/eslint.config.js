@@ -1,14 +1,13 @@
-import { FlatCompat } from "@eslint/eslintrc";
-
+// eslint.config.cjs
+const { FlatCompat } = require("@eslint/eslintrc");
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
-export default [
-  // Compatibilité avec les anciens configs eslint
+module.exports = [
   ...compat.extends("eslint:recommended"),
   {
     files: ["**/*.ts"],
     languageOptions: {
-      parser: "@typescript-eslint/parser",
+      parser: require("@typescript-eslint/parser"),
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: "module",

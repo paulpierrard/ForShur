@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../prismaClient";
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.get("/", async (_, res) => {
   const products = await prisma.product.findMany();
