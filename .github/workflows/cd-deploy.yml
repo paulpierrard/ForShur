@@ -1,4 +1,4 @@
-name: 🚀 CD - Deploy & Release
+name: CD - Deploy & Release
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  # 🔍 Déterminer les services à déployer
+  # Déterminer les services à déployer
   determine-services:
     runs-on: ubuntu-latest
     outputs:
@@ -44,25 +44,25 @@ jobs:
             echo "services=${{ github.event.inputs.service }}" >> $GITHUB_OUTPUT
           fi
 
-  # 🔐 CodeQL - Scan de sécurité
+  # CodeQL - Scan de sécurité
   security-scan:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         service: ["api-gateway", "frontend", "order-service", "product-service"]
     steps:
-      - name: "📥 Checkout code"
+      - name: "Checkout code"
         uses: actions/checkout@v4
 
-      - name: "🔐 Initialiser CodeQL"
+      - name: "Initialiser CodeQL"
         uses: github/codeql-action/init@v2
         with:
           languages: javascript
 
-      - name: "🔍 Lancer analyse CodeQL"
+      - name: "Lancer analyse CodeQL"
         uses: github/codeql-action/analyze@v2
 
-  # 📦 Build & Push - Construire et pusher les images Docker
+  # Build & Push - Construire et pusher les images Docker
   build-and-push:
     needs: [determine-services, security-scan]
     runs-on: ubuntu-latest
@@ -73,20 +73,20 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: "📥 Checkout code"
+      - name: "Checkout code"
         uses: actions/checkout@v4
 
-      - name: "🔑 Login to Container Registry"
+      - name: "Login to Container Registry"
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "🔨 Setup Docker Buildx"
+      - name: "Setup Docker Buildx"
         uses: docker/setup-buildx-action@v2
 
-      - name: "📸 Extract metadata"
+      - name: "Extract metadata"
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -97,7 +97,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix={{branch}}-
 
-      - name: "🏗️ Build et push Docker image"
+      - name: "Build et push Docker image"
         uses: docker/build-push-action@v4
         with:
           context: ./${{ matrix.service }}
@@ -107,7 +107,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # 📝 Version Bump & Changelog
+  # Version Bump & Changelog
   version-and-changelog:
     needs: determine-services
     runs-on: ubuntu-latest
@@ -121,12 +121,12 @@ jobs:
       matrix:
         service: ${{ fromJson(format('[{0}]', needs.determine-services.outputs.services)) }}
     steps:
-      - name: "📥 Checkout code"
+      - name: "Checkout code"
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: "📊 Version Bump"
+      - name: "Version Bump"
         id: version-bump
         run: |
           # Lire la version actuelle du package.json
@@ -162,7 +162,7 @@ jobs:
           jq ".version = \"$NEW_VERSION\"" ./${{ matrix.service }}/package.json > /tmp/package.json.tmp
           mv /tmp/package.json.tmp ./${{ matrix.service }}/package.json
 
-      - name: "📖 Générer Changelog"
+      - name: "Générer Changelog"
         id: changelog
         run: |
           CHANGELOG_FILE="./${{ matrix.service }}/CHANGELOG.md"
@@ -180,11 +180,11 @@ jobs:
           cat > /tmp/changelog.md << EOF
           # ${{ matrix.service }} v${{ steps.version-bump.outputs.new_version }}
 
-          ## 🎉 Changements
+          ## Changements
 
           $(echo "$COMMITS" | sed 's/^/- /')
 
-          ## 📅 Date
+          ## Date
           $(date -u +'%Y-%m-%d %H:%M:%S UTC')
 
           EOF
@@ -197,7 +197,7 @@ jobs:
           mv /tmp/changelog.md "$CHANGELOG_FILE"
           cat "$CHANGELOG_FILE" > $GITHUB_OUTPUT
 
-      - name: "🏷️ Commit & Tag"
+      - name: "Commit & Tag"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -211,7 +211,7 @@ jobs:
           git tag "${{ matrix.service }}-v${{ steps.version-bump.outputs.new_version }}"
           git push origin main --follow-tags
 
-  # 🚀 Zero Downtime Deployment
+  # Zero Downtime Deployment
   deploy:
     needs: [build-and-push, version-and-changelog]
     runs-on: ubuntu-latest
@@ -222,13 +222,13 @@ jobs:
         # Déployer séquentiellement pour éviter les surcharges
       max-parallel: 1
     steps:
-      - name: "📥 Checkout code"
+      - name: "Checkout code"
         uses: actions/checkout@v4
 
-      - name: "🔄 Rolling Deployment Check"
+      - name: "Rolling Deployment Check"
         id: health-check
         run: |
-          echo "✓ Vérification de la disponibilité du service..."
+          echo "Vérification de la disponibilité du service..."
           # Ajouter votre logique de health check ici
           # Exemple pour une API:
           # for i in {1..5}; do
@@ -241,10 +241,10 @@ jobs:
           
           echo "health_status=ready" >> $GITHUB_OUTPUT
 
-      - name: "🎯 Déployer le service (${{ matrix.service }})"
+      - name: "Déployer le service (${{ matrix.service }})"
         if: steps.health-check.outputs.health_status == 'ready'
         run: |
-          echo "📤 Déploiement de ${{ matrix.service }} v${{ needs.version-and-changelog.outputs.new_version }}"
+          echo "Déploiement de ${{ matrix.service }} v${{ needs.version-and-changelog.outputs.new_version }}"
           
           # Ajouter votre logique de déploiement ici
           # Exemples:
@@ -252,16 +252,16 @@ jobs:
           # - docker pull ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.service }}
           # - systemctl restart ${{ matrix.service }}
 
-          echo "✅ Déploiement réussi"
+          echo "Déploiement réussi"
 
-      - name: "🔍 Post-Deployment Health Check"
+      - name: "Post-Deployment Health Check"
         run: |
-          echo "✓ Vérification post-déploiement..."
+          echo " Vérification post-déploiement..."
           sleep 30
           # Ajouter votre logique de vérification post-déploiement
-          echo "✅ Service opérationnel"
+          echo "Service opérationnel"
 
-  # 📤 GitHub Release
+  # GitHub Release
   create-release:
     needs: [deploy, version-and-changelog]
     runs-on: ubuntu-latest
@@ -272,10 +272,10 @@ jobs:
       matrix:
         service: ${{ fromJson(format('[{0}]', needs.determine-services.outputs.services)) }}
     steps:
-      - name: "📥 Checkout code"
+      - name: "Checkout code"
         uses: actions/checkout@v4
 
-      - name: "🎁 Créer GitHub Release"
+      - name: "Créer GitHub Release"
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -283,31 +283,31 @@ jobs:
           tag_name: "${{ matrix.service }}-v${{ needs.version-and-changelog.outputs.new_version }}"
           release_name: "${{ matrix.service }} v${{ needs.version-and-changelog.outputs.new_version }}"
           body: |
-            ## 📦 Release: ${{ matrix.service }} v${{ needs.version-and-changelog.outputs.new_version }}
+            ## Release: ${{ matrix.service }} v${{ needs.version-and-changelog.outputs.new_version }}
 
             ${{ needs.version-and-changelog.outputs.changelog }}
 
-            ### 🐳 Images Docker
+            ### Images Docker
             - `${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ matrix.service }}:v${{ needs.version-and-changelog.outputs.new_version }}`
 
-            ### 🔐 Sécurité
-            - ✅ CodeQL scan completed
-            - ✅ Dependabot checked
-            - ✅ Zero downtime deployment
+            ### Sécurité
+            - CodeQL scan completed
+            - Dependabot checked
+            - Zero downtime deployment
 
           draft: false
           prerelease: false
 
-  # ✅ Récapitulatif
+  # Récapitulatif
   summary:
     needs: [create-release]
     runs-on: ubuntu-latest
     if: always()
     steps:
-      - name: "📊 Résumé du déploiement"
+      - name: "Résumé du déploiement"
         run: |
           echo "==================================="
-          echo "✅ Pipeline CD Terminé"
+          echo "Pipeline CD Terminé"
           echo "==================================="
           echo "Services déployés: ${{ github.event.inputs.service }}"
           echo "Version bump: ${{ github.event.inputs.bump_type }}"

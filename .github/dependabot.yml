@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # 🔄 NPM - Mises à jour des dépendances Node.js pour les 4 services
+  # NPM - Mises à jour des dépendances Node.js pour les 4 services
   - package-ecosystem: "npm"
     directory: "/api-gateway"
     schedule:
@@ -77,7 +77,7 @@ updates:
       prefix-development: "chore(deps-dev):"
       include: "scope"
 
-  # 🐳 Docker - Mises à jour des images Docker
+  #  Docker - Mises à jour des images Docker
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -96,7 +96,7 @@ updates:
       prefix: "chore(docker):"
       include: "scope"
 
-  # 🔧 GitHub Actions - Mises à jour des actions GitHub
+  #  GitHub Actions - Mises à jour des actions GitHub
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
