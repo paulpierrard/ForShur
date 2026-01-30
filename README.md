@@ -92,42 +92,4 @@ CodeQL
 
 Build & test Docker image
 
-👤 Paul – DevOps / CI-CD / Sécurité
-
-🎯 Responsable de la plateforme et des déploiements
-
-Tâches
-
-Dependabot
-
-.github/dependabot.yml
-
-npm (4 services)
-
-docker
-
-github-actions
-
-CD Pipeline global
-
-.github/workflows/cd-deploy.yml
-
-workflow_dispatch
-
-version bump (patch/minor/major)
-
-tagging service-vX.Y.Z
-
-changelog auto
-
-push images vers ghcr.io
-
-GitHub Release
-
-Sécurité & qualité
-
-Zero downtime (rolling deploy ready)
-
-Versioning & traçabilité
-
-Scan vulnérabilités (CodeQL + Dependabot)
+👤 Paul – 
