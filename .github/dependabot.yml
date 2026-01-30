@@ -1,0 +1,116 @@
+version: 2
+updates:
+  # 🔄 NPM - Mises à jour des dépendances Node.js pour les 4 services
+  - package-ecosystem: "npm"
+    directory: "/api-gateway"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paulp"
+    assignees:
+      - "paulp"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:15"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paulp"
+    assignees:
+      - "paulp"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+
+  - package-ecosystem: "npm"
+    directory: "/order-service"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:30"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paulp"
+    assignees:
+      - "paulp"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+
+  - package-ecosystem: "npm"
+    directory: "/product-service"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:45"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paulp"
+    assignees:
+      - "paulp"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+
+  # 🐳 Docker - Mises à jour des images Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "02:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paulp"
+    assignees:
+      - "paulp"
+    labels:
+      - "dependencies"
+      - "docker"
+    commit-message:
+      prefix: "chore(docker):"
+      include: "scope"
+
+  # 🔧 GitHub Actions - Mises à jour des actions GitHub
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "02:30"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paulp"
+    assignees:
+      - "paulp"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci):"
+      include: "scope"
