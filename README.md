@@ -1,4 +1,4 @@
-👤 Personne 1 – Product Service + CI
+👤 lucas – Product Service + CI
 
 🎯 Responsable du micro-service Produits
 
@@ -28,7 +28,7 @@ CodeQL
 
 Build & test Docker image
 
-👤 Personne 2 – Order Service + CI
+👤 Montajab – Order Service + CI
 
 🎯 Responsable du micro-service Commandes
 
@@ -58,7 +58,7 @@ CodeQL
 
 Build & test Docker image
 
-👤 Personne 3 – API Gateway + Frontend CI
+👤 Kavé – API Gateway + Frontend CI
 
 🎯 Responsable de l’orchestration et de l’UI
 
@@ -92,42 +92,4 @@ CodeQL
 
 Build & test Docker image
 
-👤 Personne 4 – DevOps / CI-CD / Sécurité
-
-🎯 Responsable de la plateforme et des déploiements
-
-Tâches
-
-Dependabot
-
-.github/dependabot.yml
-
-npm (4 services)
-
-docker
-
-github-actions
-
-CD Pipeline global
-
-.github/workflows/cd-deploy.yml
-
-workflow_dispatch
-
-version bump (patch/minor/major)
-
-tagging service-vX.Y.Z
-
-changelog auto
-
-push images vers ghcr.io
-
-GitHub Release
-
-Sécurité & qualité
-
-Zero downtime (rolling deploy ready)
-
-Versioning & traçabilité
-
-Scan vulnérabilités (CodeQL + Dependabot)
+👤 Paul – 
